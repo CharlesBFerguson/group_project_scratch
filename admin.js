@@ -1,49 +1,86 @@
-const mysql = require('mysql');
 const express = require('express');
-//express required as dependency in package.json but does not seem to be installed in the node_modules folder.
-const app = express();
-const port = 3306;
-const bodyparser = require('body-parser');
-//body-parser required as dependency in package.json but does not seem to be installed in the node_modules folder.
-app.use(bodyparser.json());
+const mysql = require('mysql');
 
-// Username:   jgy4kfpqhzeplmwl     Password:   nal168vbk5cgeq50
-// Port:  3306    Database:   b0j93g47mct78nva
-var mysqlConnection = mysql.createConnection({
+// create connection
+const db = mysql.createConnection({
       host : 'localhost',
-      user : 'jgy4kfpqhzeplmwl',
-  password : 'nal168vbk5cgeq50',
-  database : 'b0j93g47mct78nva'
+      user : 'root',
+  password : 'root',
+  database : 'nodemysql'
+});  
+
+// connect
+db.connect((err) => {
+  if(err) {
+    throw err;
+  }
+  console.log('MySql Connected...');
 });
 
-mysqlConnection.connect((err) => {
-  if (!err)
-  console.log('DB connection succeded');
-  else
-  console.log ('DB connection failed \n Error : ' + JSON.stringify(err, undefined, 2));
-})
+const app = express();
 
-app.listen(port, () => console.log(`Express server is running on port ${port}`));
+// create db
+app.get('/createdb', (req, res) => {
+  let sql = 'CREATE DATABASE nodemysql';
+  db.query(sql, (err, result) => {
+    console.log(result);
+    if(err) throw err;
+    res.send('Database connected...');
+  });
+});
 
-// Show in CLI:
-app.get('/employees',(res,req) => {
-  mysqlConnection.query('SELECT * FROM Employee',(err, rows, fields) => {
-    if(!err)
-    // Show entire table:
-    console.log(rows);
-    // OR show first employee ID:
-    // console.log(rows[0].EmpID);
-    else
-    console.log(err);
-  })
-}) 
+// create table
+app.get('/createpoststable', (req, res) => {
+  let sql = 'CREATE TABLE posts(id int AUTO_INCREMENT, title VARCHAR(255), body VARCHAR(255), PRIMARY KEY (id))';
+  db.query(sql, (err, result) => {
+    if(err) throw err;
+    console.log(result);
+    res.send('Posts table created...');
+  });
+});
 
-// Show in browser:
-app.get('/employees',(req,res) => {
-  mysqlConnection.query('SELECT * FROM Employee',(err, rows, fields) => {
-    if(!err)
-    res.send(rows);
-    else
-    console.log(err);
-  })
-})
+// Insert post 1
+app.get('/addpost1', (req, res) => {
+  let post = {title:'Post One', body:'This is post number one'};
+  let sql = 'INSERT INTO posts SET ?';
+  let query = db.query(sql, post, (err, result) => {
+    if(err) throw err;
+    console.log(result);
+    res.send('Post 1 added...');
+  });
+});
+
+// Insert post 2
+app.get('/addpost2', (req, res) => {
+  let post = {title:'Post Two', body:'This is post number two'};
+  let sql = 'INSERT INTO posts SET ?';
+  let query = db.query(sql, post, (err, result) => {
+    if(err) throw err;
+    console.log(result);
+    res.send('Post 2 added...');
+  });
+});
+
+// Select posts
+app.get('/getposts', (req, res) => {
+  let sql = 'SELECT * FROM posts';
+  let query = db.query(sql, (err, results) => {
+    if(err) throw err;
+    console.log(results);
+    res.send('Posts fetched...');
+  });
+});
+
+// Select single post
+app.get('/getpost/:id', (req, res) => {
+  let sql = `SELECT * FROM posts WHERE id = ${req.params.id}`;
+  let query = db.query(sql, (err, result) => {
+    if(err) throw err;
+    console.log(result);
+    res.send('Post fetched...');
+  });
+});
+
+app.listen('3000', () => {
+  console.log('Server started on port 3000');
+});

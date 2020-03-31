@@ -9,6 +9,7 @@ app.use(bodyparser.json());
 
 // Username:   jgy4kfpqhzeplmwl     Password:   nal168vbk5cgeq50
 // Port:  3306    Database:   b0j93g47mct78nva
+host : 'mysql://jgy4kfpqhzeplmwl:nal168vbk5cgeq50@mgs0iaapcj3p9srz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/b0j93g47mct78nva',
 var mysqlConnection = mysql.createConnection({
       host : 'localhost',
       user : 'jgy4kfpqhzeplmwl',
@@ -38,12 +39,12 @@ app.get('/employees',(res,req) => {
   })
 }) 
 
-// Show in browser:
-app.get('/employees',(req,res) => {
-  mysqlConnection.query('SELECT * FROM Employee',(err, rows, fields) => {
-    if(!err)
-    res.send(rows);
-    else
-    console.log(err);
-  })
-})
+// // Show in browser:
+// app.get('/employees',(req,res) => {
+//   mysqlConnection.query('SELECT * FROM Employee',(err, rows, fields) => {
+//     if(!err)
+//     res.send(rows);
+//     else
+//     console.log(err);
+//   })
+// })
