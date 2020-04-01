@@ -1,12 +1,12 @@
 const mysql = require('mysql');
 const express = require('express');
-const bodyparser = require('body-parser');
 //express required as dependency in package.json but does not seem to be installed in the node_modules folder.
+const bodyParser = require('body-parser');
+//body-parser required as dependency in package.json but does not seem to be installed in the node_modules folder.
 const app = express();
 const port = 3000;
 
-//body-parser required as dependency in package.json but does not seem to be installed in the node_modules folder.
-app.use(bodyparser.json());
+app.use(bodyParser.json());
 
 // var mysqlConnection = mysql.createConnection({
 //       host : 'mgs0iaapcj3p9srz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com',
