@@ -24,31 +24,37 @@ database : 'b0j93g47mct78nva'
 
 dBase.connect((err) => {
   if (!err)
-  console.log('DB connection succeded');
+  console.log('DB connection succeded. Please wait...');
   else
   console.log ('DB connection failed \n Error : ' + JSON.stringify(err, undefined, 2));
 });
 
-// Add user:
-const fs = require('fs');
+// // Add user:
 
-setTimeout(() => {
-	readline.question(`New user's First Name: `, (firstName) => {
-    fs.writeFileSync('firstName.txt', firstName);
-    readline.question(`New user's Last Name: `, (lastName) => {
-      fs.writeFileSync('lastName.txt', lastName);
-      readline.question(`New user's Phone Number: `, (phoneNumber) => {
-        fs.writeFileSync('phoneNumber.txt', phoneNumber);
-      console.log('files written')
-      // console.log(`Welcome, ${firstName} ${lastName}!`);
-      readline.close()
-      })
-    })
-  })},3000);
-// Execute userInfo.js to read and output the last files that were written
+// setTimeout(() => {
+// 	readline.question(`New user's First Name: `, (firstName) => {
+//     fs.writeFileSync('firstName.txt', firstName);
+//     readline.question(`New user's Last Name: `, (lastName) => {
+//       fs.writeFileSync('lastName.txt', lastName);
+//       readline.question(`New user's Phone Number: `, (phoneNumber) => {
+//         fs.writeFileSync('phoneNumber.txt', phoneNumber);
+//       console.log('files written');
+//       // console.log(`Welcome, ${firstName} ${lastName}!`);
+//       readline.close();
+//       });
+//     });
+//   })},3000);
+// // Execute userInfo.js to read and output the last files that were written
 
 
 // Add user info to table:
+
+const fs = require('fs');
+
+let firstName = fs.readFileSync('firstName.txt', 'utf8');
+let lastName = fs.readFileSync('lastName.txt', 'utf8');
+let phoneNumber = fs.readFileSync('phoneNumber.txt', 'utf8');
+
 app.get('/', (req, res) => {
   let post = {First_Name : firstName, Last_Name : lastName, Phone_Number : phoneNumber}; // Id_user set to Auto_Increment
   let sql = 'INSERT INTO user SET ?';
