@@ -1,6 +1,11 @@
 const express = require('express');
 const mysql = require('mysql');
 
+// host : 'mysql://jgy4kfpqhzeplmwl:nal168vbk5cgeq50@mgs0iaapcj3p9srz.cbetxkdyhwsb.us-east-1.rds.amazonaws.com:3306/b0j93g47mct78nva',
+// user : 'jgy4kfpqhzeplmwl',
+// password : 'nal168vbk5cgeq50',
+// database : 'b0j93g47mct78nva'
+
 // create connection
 const db = mysql.createConnection({
       host : 'localhost',
